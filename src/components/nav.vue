@@ -18,9 +18,12 @@
               <DropdownItem @click.native="goIndex">你好,{{adminInfo.username}}</DropdownItem>
               <DropdownItem @click.native="goAdminLikes">管理员-推荐歌单</DropdownItem>
               <DropdownItem @click.native="goManageMusic">管理员-歌曲管理</DropdownItem>
-              <DropdownItem @click.native="goUser_service">开机服务</DropdownItem>
-              <DropdownItem @click.native="allorders">订单查询</DropdownItem>
-              <DropdownItem @click.native="logout">用户注销</DropdownItem>
+              <!-- <DropdownItem @click.native="goUser_service">开机服务</DropdownItem> -->
+              <!-- <DropdownItem @click.native="allorders">订单查询</DropdownItem> -->
+              <DropdownItem @click.native="goManageUser">管理员-用户管理</DropdownItem>
+              <DropdownItem @click.native="goManageManager">管理员-管理员管理</DropdownItem>
+              <DropdownItem @click.native="goManageRemark">管理员-评论管理</DropdownItem>
+              <DropdownItem @click.native="logout">管理员-注销</DropdownItem>
             </DropdownMenu>
           </Dropdown>
         </MenuItem>
@@ -59,6 +62,15 @@ export default {
     },
     goAdminLikes() {
       this.$router.push("/admin/music/likes");
+    },
+    goManageUser() {
+      this.$router.push("/admin/manage/user");
+    },
+    goManageRemark() {
+      this.$router.push("/admin/manage/remarks");
+    },
+    goManageManager() {
+      this.$router.push("/admin/manage/manager");
     },
     // 刷新时间
     currentTime() {

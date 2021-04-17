@@ -11,6 +11,10 @@ import ManageMusic from "@/views/managemusic"   // 歌曲管理
 import User_Service from "@/views/user_service"  // 用户前台开机服务
 import AllOrders from "@/views/allorders"  // 所有订单
 import AdminLikes from "@/views/adminlikes"  // 所有订单
+import ManageUser from "@/views/manage/ManageUser"  //用户管理
+import ManageManager from "@/views/manage/ManageManager"  //管理员管理
+import ManageRemarks from "@/views/manage/ManageRemarks"  //评论管理
+import ManageRemarksDetail from "@/views/manage/ManageRemarksDetail"  //评论管理
 
 
 Vue.use(Router)
@@ -29,7 +33,11 @@ const vueRouter = new Router({
             {path:'manage/music', name:"managemusic", component:ManageMusic, meta:{title:"音乐管理"}},
             {path:'user_service', name:"user_service", component:User_Service, meta:{title:"用户开机"}},
             {path:'allorders', name:"allorders", component:AllOrders, meta:{title:"历史订单"}},
-            {path:'music/likes', name:"adminlikes", component:AdminLikes, meta:{title:"KTV推荐歌曲"}},
+            {path:'music/likes', name:"adminlikes", component:AdminLikes, meta:{title:"音乐点播平台"}},
+            {path:'manage/user', name:"manageuser", component: ManageUser, meta:{title:"用户管理"}},
+            {path:'manage/manager', name:"managemanager", component:ManageManager, meta:{title:"管理员管理"}},
+            { path: 'manage/remarks', name: "manageremarks", component: ManageRemarks, meta: { title: "评论管理" } },
+            {path:'manage/remarks/blog/:id/:songName/:artist/:poster/:playcount', name:"remarksdetail", component:ManageRemarksDetail, meta:{title:"评论管理详情"}},
           ]
       },
       {
