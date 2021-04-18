@@ -1,28 +1,36 @@
+<!--
+ * @Author: xujintai
+ * @Date: 2021-04-18 12:44:28
+ * @LastEditors: xujintai
+ * @LastEditTime: 2021-04-18 13:51:45
+ * @Description: file content
+ * @FilePath: \music-admin\src\views\register.vue
+-->
 <template>
   <div class="login">
-    <div class="login-title">音乐点播系统--管理员登录</div>
+    <div class="register-title">音乐点播系统--管理员注册</div>
     <div class="form-box">
       <el-form
-        class="login-form"
+        class="register-form"
         label-position="top"
         size="small"
         :inline-message="inlinemessage"
-        :model="loginForm"
-        :rules="loginRule"
-        ref="loginForm"
+        :model="registerForm"
+        :rules="registerRule"
+        ref="registerForm"
         label-width="100px"
       >
+        <el-form-item label="用户名" prop="username">
+          <el-input type="text" v-model="registerForm.username" autocomplete="off"></el-input>
+        </el-form-item>
         <el-form-item label="电子邮箱" prop="email">
-          <el-input type="text" v-model="loginForm.email" placeholder="请输入您的电子邮箱"></el-input>
+          <el-input type="text" v-model="registerForm.email" autocomplete="off"></el-input>
         </el-form-item>
         <el-form-item label="密码" prop="password">
-          <el-input
-            type="password"
-            @keypress.enter.native="submitForm('loginForm')"
-            show-password
-            v-model="loginForm.password"
-            placeholder="请输入您的密码"
-          ></el-input>
+          <el-input type="password" v-model="registerForm.password" autocomplete="off"></el-input>
+        </el-form-item>
+        <el-form-item label="确认密码" prop="checkPass">
+          <el-input type="password" v-model="registerForm.checkPass" autocomplete="off"></el-input>
         </el-form-item>
         <el-form-item label="图片验证码" prop="inputCaptcha">
           <div class="yzm">
@@ -38,13 +46,9 @@
           </div>
         </el-form-item>
         <el-form-item>
-          <el-button class="login-btn" type="primary" @click="submitForm('loginForm')">点击登录</el-button>
+          <el-button class="login-btn" type="primary" @click="submitForm('registerForm')">点击注册</el-button>
           <div>
-            <el-button
-              class="register-btn"
-              type="success"
-              @click="$router.push({ name: 'register' })"
-            >去注册</el-button>
+            <el-button class="login-btn" type="success" @click="$router.push({ name: 'login' })">去登录</el-button>
           </div>
         </el-form-item>
       </el-form>
@@ -64,21 +68,67 @@ export default {
         callback();
       }
     };
+    const validatePass = (rule, value, callback) => {
+      if (value === "") {
+        callback(new Error("请输入密码"));
+      } else {
+        if (this.registerForm.checkPass !== "") {
+          this.$refs.registerForm.validateField("checkPass");
+        } else if (value.length < 2) {
+          callback(new Error("密码长度不能少于2位!"));
+        }
+        callback();
+      }
+    };
+    const validatePass2 = (rule, value, callback) => {
+      if (value === "") {
+        callback(new Error("请再次输入密码"));
+      } else if (value !== this.registerForm.password) {
+        callback(new Error("两次输入密码不一致!"));
+      } else {
+        callback();
+      }
+    };
+    const validateUsername = (rule, value, callback) => {
+      if (!value.trim()) {
+        return callback(new Error("用户名不能为空"));
+      }
+      callback();
+    };
+
+    const validateEmail = (rule, value, callback) => {
+      if (value.length === "") {
+        callback(new Error("请输入电子邮箱"));
+      } else {
+        const rules = /^([A-z0-9]{6,18})(\w|\-)+@[A-z0-9]+\.([A-z]{2,3})$/.test(
+          value
+        );
+        if (!rules) {
+          callback(new Error("请输入正确的电子邮箱"));
+        } else {
+          callback();
+        }
+      }
+    };
     return {
       inline: true,
       inlinemessage: false,
-      loginForm: {
-        email: "",
+      registerForm: {
         password: "",
+        checkPass: "",
+        username: "",
+        email: "",
       },
-      loginRule: {
-        email: [
-          { required: true, message: "邮箱不能为空", trigger: "blur" },
-          { type: "email", message: "请输入正确的邮箱", trigger: "blur" },
+      registerRule: {
+        email: [{ validator: validateEmail, trigger: "blur" }],
+        username: [
+          { validator: validateUsername, trigger: "blur", required: true },
         ],
         password: [
-          { required: true, message: "密码不能为空", trigger: "blur" },
-          { min: 6, max: 20, message: "密码长度在6-20之间", trigger: "blur" },
+          { validator: validatePass, trigger: "blur", required: true },
+        ],
+        checkPass: [
+          { validator: validatePass2, trigger: "blur", required: true },
         ],
         inputCaptcha: [
           { required: true, validator: validateCaptcha, trigger: "blur" },
@@ -88,33 +138,28 @@ export default {
     };
   },
   methods: {
-    // 登录
+    // 注册
     submitForm(formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
-          wsmLoading.start("正在登录,请稍候...");
+          wsmLoading.start("正在注册,请稍候...");
           setTimeout(() => {
             if (this.inputCaptcha.toLowerCase() == this.getCookie("captcha")) {
               this.$axios
                 .post(
-                  "http://localhost:8633/api/admin/account/login",
-                  this.loginForm
+                  "http://localhost:8633/api/admin/account/register",
+                  this.registerForm
                 )
                 .then((res) => {
-                  if (res) {
-                    // 解析token
-                    const { token } = res.data;
-                    localStorage.setItem("adminToken", token);
-                    const decoded = jwt_decode(token);
-                    // 存储vuex中
-                    this.$store.dispatch("setAdminInfo", decoded);
-                    this.$store.dispatch("isAdminAuthorization", true);
-                    this.$Message.success(`${decoded.username}登录成功`);
+                  if (res.status === 200) {
+                    const { data } = res;
+                    const { result } = data;
+                    this.$Message.success(`${result}`);
                     wsmLoading.end();
-                    this.$router.push("/");
                   }
                 })
                 .catch((error) => {
+                  wsmLoading.end();
                   console.error(error.response);
                   this.refreshCaptcha();
                 });
@@ -163,7 +208,7 @@ export default {
   display: flex;
   flex-direction: column;
 
-  .login-title {
+  .register-title {
     width: 100%;
     height: 150px;
     line-height: 150px;
@@ -178,7 +223,7 @@ export default {
     width: 100%;
     // min-width: 500px;
 
-    .login-form {
+    .register-form {
       width: 300px;
       margin: 0px auto;
       background-color: rgb(255, 255, 255);
@@ -197,16 +242,6 @@ export default {
       }
       .login-btn:hover {
         background-color: rgb(25, 176, 223);
-      }
-
-      .register-btn {
-        width: 100%;
-        background: linear-gradient(
-          to bottom,
-          rgb(147, 235, 166),
-          rgb(147, 235, 166)
-        );
-        font-weight: 600;
       }
 
       // 验证码区域
@@ -233,3 +268,4 @@ export default {
   }
 }
 </style>
+

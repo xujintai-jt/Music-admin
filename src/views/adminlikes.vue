@@ -153,6 +153,7 @@ export default {
                   .then((res) => {
                     this.$nextTick(() => {
                       this.getAdminLikes();
+                      console.log(111);
                       wsmLoading.end();
                       this.inputPassword = "";
                       this.$Message.success("移除成功");

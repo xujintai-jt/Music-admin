@@ -4,6 +4,7 @@ import { LoadingBar } from 'view-design'
 
 // 路由
 import Login from "@/views/login"
+import Register from "@/views/register"
 import Home from "@/views/Home"
 import NotFound from "@/views/404"  // 404页面
 import Index from "@/views/Index"
@@ -49,6 +50,14 @@ const vueRouter = new Router({
         }
       },
       {
+        path:"/register",
+        name:"register",
+        component:Register,
+        meta:{
+          title:"后台注册"
+        }
+      },
+      {
           path:"*",
           name:"NotFound",
           component:NotFound,
@@ -62,13 +71,17 @@ const vueRouter = new Router({
 vueRouter.beforeEach((to, from, next) => {
     LoadingBar.start();
     const adminToken = localStorage.adminToken;
-    if(to.path == "/login"){
+    if(to.path === "/login"){
         if(adminToken){
             next("/");
         }else{
             next();
         }
-    }else{
+    }
+    else if(to.path === "/register"){
+        next();
+    }
+    else {
       // next();
         if(adminToken){
             next();
