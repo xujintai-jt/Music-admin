@@ -15,14 +15,15 @@
               <Icon type="ios-arrow-down" style="margin-left:5px;color:#bbb;"></Icon>
             </a>
             <DropdownMenu slot="list">
-              <DropdownItem @click.native="goIndex">你好,{{adminInfo.username}}</DropdownItem>
-              <DropdownItem @click.native="goAdminLikes">管理员-推荐歌单</DropdownItem>
-              <DropdownItem @click.native="goManageMusic">管理员-歌曲管理</DropdownItem>
+              <DropdownItem @click.native="goPage('/admin/index')">你好,{{adminInfo.username}}</DropdownItem>
+              <DropdownItem @click.native="goPage('/admin/music/likes')">管理员-推荐歌单</DropdownItem>
+              <DropdownItem @click.native="goPage('/admin/manage/music')">管理员-歌曲管理</DropdownItem>
               <!-- <DropdownItem @click.native="goUser_service">开机服务</DropdownItem> -->
               <!-- <DropdownItem @click.native="allorders">订单查询</DropdownItem> -->
-              <DropdownItem @click.native="goManageUser">管理员-用户管理</DropdownItem>
-              <DropdownItem @click.native="goManageManager">管理员-管理员管理</DropdownItem>
-              <DropdownItem @click.native="goManageRemark">管理员-评论管理</DropdownItem>
+              <DropdownItem @click.native="goPage('/admin/manage/user')">管理员-用户管理</DropdownItem>
+              <DropdownItem @click.native="goPage('/admin/manage/manager')">管理员-管理员管理</DropdownItem>
+              <DropdownItem @click.native="goPage('/admin/manage/remarks')">管理员-评论管理</DropdownItem>
+              <DropdownItem @click.native="goPage('/admin/manage/userlikes')">管理员-用户收藏管理</DropdownItem>
               <DropdownItem @click.native="logout">管理员-注销</DropdownItem>
             </DropdownMenu>
           </Dropdown>
@@ -48,29 +49,8 @@ export default {
     this.currentTime();
   },
   methods: {
-    goIndex() {
-      this.$router.push("/admin/index");
-    },
-    allorders() {
-      this.$router.push("/admin/allorders");
-    },
-    goUser_service() {
-      this.$router.push("/admin/user_service");
-    },
-    goManageMusic() {
-      this.$router.push("/admin/manage/music");
-    },
-    goAdminLikes() {
-      this.$router.push("/admin/music/likes");
-    },
-    goManageUser() {
-      this.$router.push("/admin/manage/user");
-    },
-    goManageRemark() {
-      this.$router.push("/admin/manage/remarks");
-    },
-    goManageManager() {
-      this.$router.push("/admin/manage/manager");
+    goPage(path) {
+      this.$router.push(path);
     },
     // 刷新时间
     currentTime() {

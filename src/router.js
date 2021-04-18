@@ -14,9 +14,12 @@ import AllOrders from "@/views/allorders"  // 所有订单
 import AdminLikes from "@/views/adminlikes"  // 所有订单
 import ManageUser from "@/views/manage/ManageUser"  //用户管理
 import ManageManager from "@/views/manage/ManageManager"  //管理员管理
-import ManageRemarks from "@/views/manage/ManageRemarks"  //评论管理
-import ManageRemarksDetail from "@/views/manage/ManageRemarksDetail"  //评论管理
-
+import ManageRemarks from "@/views/manage/ManageRemarks"  //评论管理首页
+import ManageRemarksDetail from "@/views/manage/ManageRemarksDetail"  //评论管理详情页
+import ManageUserLikes from "@/views/userlikes/userlikes"  //管理用户收藏页
+import ManageUserLikesDetails from "@/views/userlikes/userlikesdetail"  //管理用户收藏详情页
+import ManageAllUserLikes from "@/views/userlikes/alluserlikes"  //前往所有用户音乐收藏界面
+import ManageMusicDetail from "@/views/userlikes/muiscdetail"  //音乐详情页面
 
 Vue.use(Router)
 
@@ -38,7 +41,11 @@ const vueRouter = new Router({
             {path:'manage/user', name:"manageuser", component: ManageUser, meta:{title:"用户管理"}},
             {path:'manage/manager', name:"managemanager", component:ManageManager, meta:{title:"管理员管理"}},
             { path: 'manage/remarks', name: "manageremarks", component: ManageRemarks, meta: { title: "评论管理" } },
-            {path:'manage/remarks/blog/:id/:songName/:artist/:poster/:playcount', name:"remarksdetail", component:ManageRemarksDetail, meta:{title:"评论管理详情"}},
+            { path: 'manage/remarks/blog/:id/:songName/:artist/:poster/:playcount', name: "remarksdetail", component: ManageRemarksDetail, meta: { title: "评论管理详情" } },
+            { path: 'manage/userlikes', name: "manageuserlikes", component: ManageUserLikes, meta: { title: "用户收藏管理" } },
+            { path: 'manage/userlikesdetails/:id/:username', name: "manageuserlikesdetails", component: ManageUserLikesDetails, meta: { title: "用户收藏详情页管理" } },
+            { path: 'manage/alluserlikes', name: "managealluserlikes", component: ManageAllUserLikes, meta: { title: "用户收藏详情页管理" } },
+            { path: 'manage/alluserlikes/:id', name: "managemusicdetail", component: ManageMusicDetail, meta: { title: "音乐详情" } },
           ]
       },
       {
