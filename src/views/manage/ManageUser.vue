@@ -2,7 +2,7 @@
  * @Author: xujintai
  * @Date: 2021-04-17 21:19:58
  * @LastEditors: xujintai
- * @LastEditTime: 2021-04-17 22:36:04
+ * @LastEditTime: 2021-04-18 11:17:29
  * @Description: file content
  * @FilePath: \music-admin\src\views\manage\ManageUser.vue
 -->
@@ -16,11 +16,12 @@
 -->
 <template>
   <div id="user-info">
-    <h1>欢迎来到您的个人信息页面</h1>
+    <h1>欢迎来到用户信息页面</h1>
     <!-- 用户信息 -->
     <div style="width:100%;background-color:#f40;">
       <el-table :data="userInfos" class="song-table" border>
         <el-table-column label="序号" type="index" align="center"></el-table-column>
+        <el-table-column label="用户id" prop="_id" align="center"></el-table-column>
         <el-table-column label="用户名" prop="username" align="center"></el-table-column>
         <el-table-column label="密码" prop="password" align="center"></el-table-column>
         <el-table-column label="手机号" prop="mobile" align="center"></el-table-column>
@@ -32,12 +33,12 @@
         </el-table-column>
         <el-table-column label="编辑" align="center">
           <template slot-scope="scope">
-            <el-button icon="el-icon-edit" @click="collectionMusic(scope.row)"></el-button>
+            <el-button icon="el-icon-edit" @click="editUserInfo(scope.row)"></el-button>
           </template>
         </el-table-column>
         <el-table-column label="删除" align="center">
           <template slot-scope="scope">
-            <el-button icon="el-icon-delete" @click="collectionMusic(scope.row)"></el-button>
+            <el-button icon="el-icon-delete" @click="delnUserInfo(scope.row)"></el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -62,14 +63,14 @@
         <el-form-item label="用户名" prop="username">
           <el-input type="text" v-model="ruleForm.username" autocomplete="off"></el-input>
         </el-form-item>
-        <el-form-item label="手机号">
+        <!-- <el-form-item label="手机号">
           <span>{{userInfos.mobile}}</span>
-        </el-form-item>
+        </el-form-item>-->
         <el-form-item label="密码" prop="password">
-          <el-input type="password" v-model="ruleForm.password" autocomplete="off"></el-input>
+          <el-input type="text" v-model="ruleForm.password" autocomplete="off"></el-input>
         </el-form-item>
         <el-form-item label="确认密码" prop="checkPass">
-          <el-input type="password" v-model="ruleForm.checkPass" autocomplete="off"></el-input>
+          <el-input type="text" v-model="ruleForm.checkPass" autocomplete="off"></el-input>
         </el-form-item>
         <el-form-item label="年龄" prop="age">
           <el-input v-model.number="ruleForm.age"></el-input>
@@ -152,14 +153,9 @@ export default {
         mobile: "",
         sex: "",
         username: "",
+        id: "",
       },
-      userInfos: {
-        // password: "",
-        // age: "",
-        // mobile: "",
-        // sex: "",
-        // username: "",
-      },
+      userInfos: [],
       editDialog: {
         title: "编辑用户信息",
         show: false,
@@ -189,12 +185,12 @@ export default {
   },
   methods: {
     //获取用户信息
-    getUserInfo(mobile) {
+    getUserInfo() {
       this.$axios
         .get(`http://localhost:8633/api/user/query/all`)
         .then((res) => {
           const { data } = res;
-          console.log(data);
+          // console.log(data);
           if (data.status !== 200) {
             return this.$message({
               message: "暂无用户注册信息",
@@ -209,7 +205,6 @@ export default {
       console.log(11111111);
       this.$refs[formName].validate(async (valid) => {
         if (valid) {
-          this.ruleForm.mobile = this.userInfos.mobile;
           //请求头"Content-Type"设置为"application/x-www-form-urlencoded"
           const res = await this.$axios.post(
             "http://localhost:8633/api/user/edit",
@@ -218,9 +213,9 @@ export default {
           const { data, status } = res;
           if (status === 200) {
             //刷新表单数据,隐藏表单;刷新页面上的用户数据
+            this.getUserInfo();
             this.resetForm("ruleForm");
             this.editDialog.show = false;
-            this.getUserInfo(this.userInfos.mobile);
             return this.$message({
               message: data.result,
               type: "success",
@@ -240,10 +235,44 @@ export default {
     resetForm(formName) {
       this.$refs[formName].resetFields();
     },
-    currentTheme() {
-      //可以本地化存储themeColor
-      console.log(this.themeColor);
-      console.log(this.$root);
+    //编辑用户信息
+    editUserInfo(row) {
+      //显示编辑对话框
+      this.editDialog.show = true;
+      this.ruleForm.id = row._id;
+      this.ruleForm.username = row.username;
+      this.ruleForm.password = row.password;
+      this.ruleForm.checkPass = row.password;
+      this.ruleForm.age = Number(row.age);
+      this.ruleForm.sex = row.sex;
+      this.ruleForm.mobile = row.mobile;
+      console.log();
+      console.log(row);
+    },
+    //删除用户信息
+    delnUserInfo(row) {
+      this.$confirm("您确定删除此用户吗？", "删除提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning",
+      })
+        .then(() => {
+          const { _id } = row;
+          this.$axios
+            .post("http://localhost:8633/api/admin/user/del", {
+              _id,
+            })
+            .then((res) => {
+              //刷新用户数据
+              this.getUserInfo();
+              this.$message({
+                message: "用户删除成功",
+                type: "success",
+              });
+            });
+        })
+        .catch(() => {});
+      console.log(row);
     },
   },
 };

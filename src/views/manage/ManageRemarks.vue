@@ -2,7 +2,7 @@
  * @Author: xujintai
  * @Date: 2021-04-17 21:19:58
  * @LastEditors: xujintai
- * @LastEditTime: 2021-04-17 22:01:04
+ * @LastEditTime: 2021-04-18 10:14:32
  * @Description: file content
  * @FilePath: \music-admin\src\views\manage\ManageRemarks.vue
 -->
@@ -45,11 +45,6 @@
         <el-table-column label="进入评论页面" align="center">
           <template slot-scope="scope">
             <el-button @click="musicComments(scope.row)">{{scope.row.songName}}</el-button>
-          </template>
-        </el-table-column>
-        <el-table-column label="收藏" align="center">
-          <template slot-scope="scope">
-            <el-button icon="el-icon-star-off" @click="collectionMusic(scope.row)"></el-button>
           </template>
         </el-table-column>
       </el-table>
