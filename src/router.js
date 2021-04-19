@@ -45,7 +45,7 @@ const vueRouter = new Router({
             { path: 'manage/userlikes', name: "manageuserlikes", component: ManageUserLikes, meta: { title: "用户收藏管理" } },
             { path: 'manage/userlikesdetails/:id/:username', name: "manageuserlikesdetails", component: ManageUserLikesDetails, meta: { title: "用户收藏详情页管理" } },
             { path: 'manage/alluserlikes', name: "managealluserlikes", component: ManageAllUserLikes, meta: { title: "用户收藏详情页管理" } },
-            { path: 'manage/alluserlikes/:id', name: "managemusicdetail", component: ManageMusicDetail, meta: { title: "音乐详情" } },
+            { path: 'manage/alluserlikes/:id/:collectCounts', name: "managemusicdetail", component: ManageMusicDetail, meta: { title: "音乐详情" } },
           ]
       },
       {

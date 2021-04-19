@@ -2,7 +2,7 @@
  * @Author: xujintai
  * @Date: 2021-04-18 16:49:22
  * @LastEditors: xujintai
- * @LastEditTime: 2021-04-18 18:56:41
+ * @LastEditTime: 2021-04-19 19:48:31
  * @Description: file content
  * @FilePath: \music-admin\src\views\userlikes\alluserlikes.vue
 -->
@@ -12,7 +12,7 @@
     <div v-for="(item,index) in UserLikemusicsCount" :key="index">
       <div class="musicLike-Count">
         <span>音乐ID:</span>
-        <el-button @click="toMusicDetail(index)" type="primary" plain>{{index}}</el-button>
+        <el-button @click="toMusicDetail(index,item)" type="primary" plain>{{index}}</el-button>
         <span>所有用户收藏次数:</span>
         <span>{{item}}</span>
       </div>
@@ -57,8 +57,11 @@ export default {
       return obj;
     },
     //跳转到musicDetail页面
-    toMusicDetail(id) {
-      this.$router.push({ name: "managemusicdetail", params: { id } });
+    toMusicDetail(id, collectCounts) {
+      this.$router.push({
+        name: "managemusicdetail",
+        params: { id, collectCounts },
+      });
     },
   },
 };

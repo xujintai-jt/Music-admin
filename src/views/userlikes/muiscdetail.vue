@@ -2,7 +2,7 @@
  * @Author: xujintai
  * @Date: 2021-04-18 18:30:48
  * @LastEditors: xujintai
- * @LastEditTime: 2021-04-18 19:10:39
+ * @LastEditTime: 2021-04-19 19:52:50
  * @Description: file content
  * @FilePath: \music-admin\src\views\userlikes\muiscdetail.vue
 -->
@@ -22,7 +22,9 @@
         </template>
       </el-table-column>
       <el-table-column prop="style" label="风格"></el-table-column>
-      <el-table-column prop="playcount" label="播放次数"></el-table-column>
+      <el-table-column label="所有用户收藏次数">
+        <template>{{collectCounts}}</template>
+      </el-table-column>
       <el-table-column prop="date" label="上架日期"></el-table-column>
     </el-table>
   </div>
@@ -32,12 +34,14 @@
 export default {
   data() {
     return {
+      collectCounts: "",
       musicid: "",
       musiscInfo: [],
     };
   },
   created() {
     this.musicid = this.$route.params.id;
+    this.collectCounts = this.$route.params.collectCounts;
     this.getMusic();
   },
   methods: {
@@ -58,7 +62,9 @@ export default {
 
 <style lang="less" scoped>
 #musicdetail {
+  height: 100vh;
   text-align: center;
+  background-color: #fdf6ec;
   .el-table {
     margin: 0;
     margin: auto;

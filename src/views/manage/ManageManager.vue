@@ -2,7 +2,7 @@
  * @Author: xujintai
  * @Date: 2021-04-17 21:19:58
  * @LastEditors: xujintai
- * @LastEditTime: 2021-04-18 14:26:10
+ * @LastEditTime: 2021-04-19 19:58:19
  * @Description: file content
  * @FilePath: \music-admin\src\views\manage\ManageManager.vue
 -->
@@ -16,7 +16,7 @@
 -->
 <template>
   <div id="user-info">
-    <h1>欢迎来到用户信息页面</h1>
+    <h1>欢迎来到管理员信息页面</h1>
     <!-- 用户信息 -->
     <div style="width:100%;background-color:#f40;">
       <el-table :data="userInfos" class="song-table" border>
